@@ -125,6 +125,8 @@ def make_html(veh_id, date):
 
                 gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], config.colors[j%len(config.colors)], edge_width=10)
 
+        status_label.setText(' ')
+
     else:
         ftxts = glob.glob(dir_path+'/data/server/text/'+veh_id+'_'+date+'*.txt')
         ftxts.sort()
@@ -178,10 +180,13 @@ def make_html(veh_id, date):
         gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
 
         stop_cnt = 0
-
+        total_dist = 0
+        total_time = 0
         #color code: stop-fast | red-blue 
         for i in range(len(snapped_path)-1):
             dist = distance(snapped_path[i], snapped_path[i+1])
+            total_dist += dist
+            total_time += time[i+1] - time[i]
             speed = dist/(time[i+1] - time[i])
             if speed < 1:
                 #essentially stop
@@ -210,6 +215,9 @@ def make_html(veh_id, date):
                 stop_cnt = 0
 
             gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
+
+        status_label.setText('total distance: '+str(round(float(total_dist)/1000, 2))+'km, elapsed time: '+str(float(total_time)/60)+\
+            ' min, average speed: '+str(round(total_dist*3.6/total_time, 2))+' km/h')
 
 
     #save plot as html
@@ -302,11 +310,15 @@ if __name__ == "__main__":
     grid = QGridLayout()
     browser = QWebView()
     
+    status_label = QLabel()
+    status_label.setFixedHeight(15)
+    status_label.setStyleSheet('color: white')
+
     #load available dates from vehicle folder
     vehicle_label = QLabel()
     vehicle_label.setText('Vehicle')
     vehicle_label.setFixedHeight(10)
-    vehicle_label.setStyleSheet('color: yellow')
+    vehicle_label.setStyleSheet('color: limegreen')
     vehicle_box = VehicleBox(vehicle_list)
     vehicle_box.setFixedHeight(40)
     vehicle_box.setStyleSheet('color: black; background-color: white;')
@@ -314,15 +326,17 @@ if __name__ == "__main__":
     date_label = QLabel()
     date_label.setText('Date')
     date_label.setFixedHeight(10)
-    date_label.setStyleSheet('color: yellow')
+    date_label.setStyleSheet('color: limegreen')
     date_box = DateBox(date_list)
     date_box.setFixedHeight(40)
     date_box.setStyleSheet('color: black; background-color: white;')
+
     grid.addWidget(vehicle_label, 1, 0)
     grid.addWidget(vehicle_box, 2, 0)
     grid.addWidget(date_label, 3, 0)
     grid.addWidget(date_box, 4, 0)
-    grid.addWidget(browser, 5, 0)
+    grid.addWidget(status_label, 5, 0)
+    grid.addWidget(browser, 6, 0)
     
     # main app window
     main_frame = QWidget()
