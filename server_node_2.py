@@ -172,6 +172,7 @@ class DateBox(QWidget):
         html_path = make_html(cur_vehicle, cur_date)
         browser.load(QUrl(html_path))
 
+
 def onTimer():
     print('refresh')
     global cur_vehicle, cur_date
@@ -207,8 +208,7 @@ if __name__ == "__main__":
     # create grid layout
     grid = QGridLayout()
     browser = QWebView()
-    # url_input = UrlInput(browser)
-
+    
     #load available dates from vehicle folder
     vehicle_label = QLabel()
     vehicle_label.setText('Vehicle')
@@ -240,5 +240,6 @@ if __name__ == "__main__":
     timer.setInterval(config.rpf_min*60*1000) #in ms, every rpf minutes
     timer.start() 
     
+
     # close app when user closes window
     sys.exit(app.exec_())
