@@ -13,5 +13,3 @@ pip install gmplot
 #greeter-session=lightdm-gtk-greeter 
 #autologin-user=srackham 
 #go to settings and enable autologin
-
-
