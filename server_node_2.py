@@ -50,78 +50,167 @@ def distance(pt1, pt2):
 def make_html(veh_id, date):
     #veh_id: e.g. '1', '2', '3'
     #date; e.g. '05_02_2019' 'dd_mm_yyyy'
-    ftxts = glob.glob(dir_path+'/data/server/text/'+veh_id+'_'+date+'*.txt')
-    ftxts.sort()
+    if veh_id == 'all':
+        for j in range(1, len(vehicle_list)):
+            veh = vehicle_list[j]
+            ftxts = glob.glob(dir_path+'/data/server/text/'+veh+'_'+date+'*.txt')
+            ftxts.sort()
 
-    snapped_path = []
-    raw_path = []
-    time = []
-    
-    for ftxt in ftxts:
-        f = open(ftxt, 'r')
-        lines = f.readlines()
-        path = []
+            snapped_path = []
+            raw_path = []
+            time = []
+            
+            for ftxt in ftxts:
+                f = open(ftxt, 'r')
+                lines = f.readlines()
+                path = []
 
-        for line in lines:
-            if len(line) == 0:
-                continue
+                for line in lines:
+                    if len(line) == 0:
+                        continue
 
-            msg = line.split(' ')
-            lat = float(msg[0])
-            lon = float(msg[1])
-            clock = float(msg[2])
+                    msg = line.split(' ')
+                    lat = float(msg[0])
+                    lon = float(msg[1])
+                    clock = float(msg[2])
 
-            #sanity checks
-            if np.isnan(lat) or np.isnan(lon):
-                continue
-            if lat == 0 or lon == 0:
-                continue
+                    #sanity checks
+                    if np.isnan(lat) or np.isnan(lon):
+                        continue
+                    if lat == 0 or lon == 0:
+                        continue
 
-            raw_path.append([lat, lon])
-            path.append([lat, lon])
-            time.append(clock)
+                    raw_path.append([lat, lon])
+                    path.append([lat, lon])
+                    time.append(clock)
+                
+                if len(path) == 0:
+                    continue
+
+                #use gmaps service to snap to road, cannot accept nan
+                snap_road_result = gmaps.snap_to_roads(path, interpolate = False)
+                for k in snap_road_result:
+                    lat = k['location']['latitude']
+                    lon = k['location']['longitude']
+                    snapped_path.append([lat, lon])
+            
+            snapped_path = np.asarray(snapped_path)
+            raw_path = np.asarray(raw_path)
+
+            #plot snapped path
+            if j == 1:
+                gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, API_KEY)
+            
+            #plot raw path
+            gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
+            gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
+
+            stop_cnt = 0
+
+            #color code: stop-fast | red-blue 
+            for i in range(len(snapped_path)-1):
+                dist = distance(snapped_path[i], snapped_path[i+1])
+                speed = dist/(time[i+1] - time[i])
+                if speed < 1:
+                    #essentially stop
+                    stop_cnt += 1
+                else:
+                    #> 50 kmph
+                    stop_cnt = 0
+
+                if stop_cnt > 1*60/config.spc: #we wait 5 minutes
+                    #stopped for too long, put a flag
+                    gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
+                    stop_cnt = 0
+
+                gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], config.colors[j%len(config.colors)], edge_width=10)
+
+    else:
+        ftxts = glob.glob(dir_path+'/data/server/text/'+veh_id+'_'+date+'*.txt')
+        ftxts.sort()
+
+        snapped_path = []
+        raw_path = []
+        time = []
         
-        if len(path) == 0:
-            continue
+        for ftxt in ftxts:
+            f = open(ftxt, 'r')
+            lines = f.readlines()
+            path = []
 
-        #use gmaps service to snap to road, cannot accept nan
-        snap_road_result = gmaps.snap_to_roads(path, interpolate = False)
-        for k in snap_road_result:
-            lat = k['location']['latitude']
-            lon = k['location']['longitude']
-            snapped_path.append([lat, lon])
-    
+            for line in lines:
+                if len(line) == 0:
+                    continue
 
-    snapped_path = np.asarray(snapped_path)
-    raw_path = np.asarray(raw_path)
+                msg = line.split(' ')
+                lat = float(msg[0])
+                lon = float(msg[1])
+                clock = float(msg[2])
 
-    #plot snapped path
-    gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 13, API_KEY)
-    #plot raw path
-    gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
-    gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
+                #sanity checks
+                if np.isnan(lat) or np.isnan(lon):
+                    continue
+                if lat == 0 or lon == 0:
+                    continue
 
-    #color code: stop-fast | red-blue 
-    for i in range(len(snapped_path)-1):
-        dist = distance(snapped_path[i], snapped_path[i+1])
-        speed = dist/(time[i+1] - time[i])
-        if speed < 1:
-            #essentially stop
-            color = 'red'
-        elif speed < 10/3.6:
-            #below 10 kmph
-            color = 'maroon'
-        elif speed < 25/3.6:
-            #below 25 kmph
-            color = 'darkorange'
-        elif speed < 50/3.6:
-            #below 50 kmph
-            color = 'seagreen'
-        else:
-            #> 50 kmph
-            color = 'royalblue'
+                raw_path.append([lat, lon])
+                path.append([lat, lon])
+                time.append(clock)
+            
+            if len(path) == 0:
+                continue
 
-        gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
+            #use gmaps service to snap to road, cannot accept nan
+            snap_road_result = gmaps.snap_to_roads(path, interpolate = False)
+            for k in snap_road_result:
+                lat = k['location']['latitude']
+                lon = k['location']['longitude']
+                snapped_path.append([lat, lon])
+        
+
+        snapped_path = np.asarray(snapped_path)
+        raw_path = np.asarray(raw_path)
+
+        #plot snapped path
+        gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, API_KEY)
+        #plot raw path
+        gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
+        gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
+
+        stop_cnt = 0
+
+        #color code: stop-fast | red-blue 
+        for i in range(len(snapped_path)-1):
+            dist = distance(snapped_path[i], snapped_path[i+1])
+            speed = dist/(time[i+1] - time[i])
+            if speed < 1:
+                #essentially stop
+                color = 'red'
+                stop_cnt += 1
+            elif speed < 10/3.6:
+                #below 10 kmph
+                color = 'maroon'
+                stop_cnt = 0
+            elif speed < 25/3.6:
+                #below 25 kmph
+                color = 'darkorange'
+                stop_cnt = 0
+            elif speed < 50/3.6:
+                #below 50 kmph
+                color = 'seagreen'
+                stop_cnt = 0
+            else:
+                #> 50 kmph
+                color = 'royalblue'
+                stop_cnt = 0
+
+            if stop_cnt > 1*60/config.spc: #we wait 5 minutes
+                #stopped for too long, put a flag
+                gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
+                stop_cnt = 0
+
+            gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
+
 
     #save plot as html
     html_name = dir_path+'/data/server/html/'+veh_id+'_'+date+'.html'
@@ -199,6 +288,10 @@ if __name__ == "__main__":
         if date not in date_list:
             date_list.append(date)
 
+    vehicle_list.sort()
+    vehicle_list.insert(0, 'all')
+    date_list.sort(reverse=True)
+
     cur_vehicle = vehicle_list[0]               
     cur_date = date_list[0]                      
 
@@ -213,16 +306,18 @@ if __name__ == "__main__":
     vehicle_label = QLabel()
     vehicle_label.setText('Vehicle')
     vehicle_label.setFixedHeight(10)
+    vehicle_label.setStyleSheet('color: yellow')
     vehicle_box = VehicleBox(vehicle_list)
     vehicle_box.setFixedHeight(40)
-
+    vehicle_box.setStyleSheet('color: black; background-color: white;')
     #load available dates from date folder
     date_label = QLabel()
     date_label.setText('Date')
     date_label.setFixedHeight(10)
+    date_label.setStyleSheet('color: yellow')
     date_box = DateBox(date_list)
     date_box.setFixedHeight(40)
-
+    date_box.setStyleSheet('color: black; background-color: white;')
     grid.addWidget(vehicle_label, 1, 0)
     grid.addWidget(vehicle_box, 2, 0)
     grid.addWidget(date_label, 3, 0)
