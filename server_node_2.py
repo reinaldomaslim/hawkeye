@@ -216,9 +216,21 @@ def make_html(veh_id, date):
 
             gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
 
-        status_label.setText('total distance: '+str(round(float(total_dist)/1000, 2))+'km, elapsed time: '+str(float(total_time)/60)+\
-            ' min, average speed: '+str(round(total_dist*3.6/total_time, 2))+' km/h')
 
+        gmap.scatter([snapped_path[-1, 0]], [snapped_path[-1, 1]], 'blue', size=5, marker=True)
+        res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
+        last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
+        hour = int(time[-1]/3600)
+        minutes = int((time[-1]-hour*3600)/60)
+        sec = int(time[-1]-hour*3600-minutes*60)
+        status_label.setText(
+            ' || updated time: ' + str(hour)+':'+str(minutes)+':'+str(sec)+\
+            ' || total distance: ' + str(round(float(total_dist)/1000, 2))+\
+            ' km || elapsed time: ' + str(float(total_time)/60)+\
+            ' min || average speed: ' + str(round(total_dist*3.6/total_time, 2))+\
+            ' km/h || last position: ' + last_position+\
+            ' ||'
+            )
 
     #save plot as html
     html_name = dir_path+'/data/server/html/'+veh_id+'_'+date+'.html'
@@ -311,7 +323,7 @@ if __name__ == "__main__":
     browser = QWebView()
     
     status_label = QLabel()
-    status_label.setFixedHeight(15)
+    status_label.setFixedHeight(20)
     status_label.setStyleSheet('color: white')
 
     #load available dates from vehicle folder
