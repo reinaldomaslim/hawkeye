@@ -10,6 +10,7 @@ import googlemaps
 import glob
 import sys
 import config
+import datetime
 from googlemaps import convert
 from gmplot import gmplot
 from math import sin, cos, sqrt, atan2, radians
@@ -25,8 +26,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 ##### INIT GMAPS #####
 
-API_KEY = config.API_KEY     #setup key
-gmaps = googlemaps.Client(key=API_KEY)
+gmaps = googlemaps.Client(key=config.API_KEY)
 
 def distance(pt1, pt2):
     # approximate radius of earth in m
@@ -50,6 +50,21 @@ def distance(pt1, pt2):
 def make_html(veh_id, date):
     #veh_id: e.g. '1', '2', '3'
     #date; e.g. '05_02_2019' 'dd_mm_yyyy'
+    html_name = dir_path+'/data/server/html/'+veh_id+'_'+date+'.html'
+    status_path = dir_path+'/data/server/html/'+veh_id+'_'+date+'.txt'
+
+    currentDT = datetime.datetime.now()
+    today_date = currentDT.strftime("%d_%m_%Y")
+
+    if date != today_date and os.path.isfile(html_name):
+        
+        if veh_id!='all' and os.path.isfile(status_path):
+            f = open(status_path, 'r')
+            status_text = f.readlines()[0]
+            status_label.setText(status_text)
+            return html_name
+
+
     if veh_id == 'all':
         for j in range(1, len(vehicle_list)):
             veh = vehicle_list[j]
@@ -99,7 +114,7 @@ def make_html(veh_id, date):
 
             #plot snapped path
             if j == 1:
-                gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, API_KEY)
+                gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, config.API_KEY)
             
             #plot raw path
             gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
@@ -174,7 +189,7 @@ def make_html(veh_id, date):
         raw_path = np.asarray(raw_path)
 
         #plot snapped path
-        gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, API_KEY)
+        gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, config.API_KEY)
         #plot raw path
         gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
         gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
@@ -223,17 +238,20 @@ def make_html(veh_id, date):
         hour = int(time[-1]/3600)
         minutes = int((time[-1]-hour*3600)/60)
         sec = int(time[-1]-hour*3600-minutes*60)
-        status_label.setText(
-            ' || updated time: ' + str(hour)+':'+str(minutes)+':'+str(sec)+\
+        status_text = ' || updated time: ' + str(hour)+':'+str(minutes)+':'+str(sec)+\
             ' || total distance: ' + str(round(float(total_dist)/1000, 2))+\
             ' km || elapsed time: ' + str(float(total_time)/60)+\
             ' min || average speed: ' + str(round(total_dist*3.6/total_time, 2))+\
             ' km/h || last position: ' + last_position+\
             ' ||'
-            )
+
+        status_label.setText(status_text)
+
+        f = open(status_path, 'w')
+        f.write(status_text)
+        f.close()
 
     #save plot as html
-    html_name = dir_path+'/data/server/html/'+veh_id+'_'+date+'.html'
     gmap.draw(html_name)
     
     return html_name
@@ -259,6 +277,11 @@ class VehicleBox(QWidget):
         html_path = make_html(cur_vehicle, cur_date)
         browser.load(QUrl(html_path))
 
+        if app.focusWidget() is not None:    
+            app.focusWidget().clearFocus()
+        
+
+
 class DateBox(QWidget):
     def __init__(self, items):
         super(DateBox, self).__init__()
@@ -274,6 +297,8 @@ class DateBox(QWidget):
         html_path = make_html(cur_vehicle, cur_date)
         browser.load(QUrl(html_path))
 
+
+
     def selectionchange(self,i):
         global cur_vehicle, cur_date
         cur_date = str(self.cb.currentText())
@@ -282,13 +307,38 @@ class DateBox(QWidget):
         browser.load(QUrl(html_path))
 
 
+        if app.focusWidget() is not None:    
+            app.focusWidget().clearFocus()
+        
 def onTimer():
-    print('refresh')
+    #refresh page for new files
     global cur_vehicle, cur_date
     html_path = make_html(cur_vehicle, cur_date)
     browser.load(QUrl(html_path))
 
+def keyHandler(e):
+    global vehicle_box, date_box, app
 
+    if e.key() == Qt.Key_Escape:
+        print("boobye")
+        sys.exit(app.exec_())
+    elif e.key() == Qt.Key_Right:
+        i = vehicle_list.index(vehicle_box.cb.currentText())
+        ind = min(i+1, len(vehicle_list)-1)
+        vehicle_box.cb.setCurrentIndex(ind)
+    elif e.key() == Qt.Key_Left:
+        i = vehicle_list.index(vehicle_box.cb.currentText())
+        ind = max(i-1, 0)
+        vehicle_box.cb.setCurrentIndex(ind)
+    elif e.key() == Qt.Key_Up:
+        i = date_list.index(date_box.cb.currentText())
+        ind = max(i-1, 0)
+        date_box.cb.setCurrentIndex(ind)
+    elif e.key() == Qt.Key_Down:
+        i = date_list.index(date_box.cb.currentText())
+        ind = min(i+1, len(date_list)-1)
+        date_box.cb.setCurrentIndex(ind)
+    
 ##### MAIN #####
 
 if __name__ == "__main__":
@@ -318,10 +368,11 @@ if __name__ == "__main__":
 
     app = QApplication(['Hawkeye v1.0'])
 
+
     # create grid layout
     grid = QGridLayout()
     browser = QWebView()
-    
+        
     status_label = QLabel()
     status_label.setFixedHeight(20)
     status_label.setStyleSheet('color: white')
@@ -355,12 +406,13 @@ if __name__ == "__main__":
     main_frame.setLayout(grid)
     main_frame.showMaximized()
     main_frame.setStyleSheet("color: white; background-color: black;")
+    main_frame.keyPressEvent = keyHandler
+    main_frame.setFocus()
 
     timer = QTimer(grid)
     timer.timeout.connect(onTimer)
     timer.setInterval(config.rpf_min*60*1000) #in ms, every rpf minutes
     timer.start() 
-    
 
     # close app when user closes window
     sys.exit(app.exec_())
