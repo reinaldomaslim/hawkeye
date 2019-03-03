@@ -19,7 +19,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtWebKit import *
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-
 ####################### NODE 2 for SERVER ###########################
 ##### this node performs gui, analytics, and generate html maps #####
 #####################################################################
@@ -280,8 +279,6 @@ class VehicleBox(QWidget):
         if app.focusWidget() is not None:    
             app.focusWidget().clearFocus()
         
-
-
 class DateBox(QWidget):
     def __init__(self, items):
         super(DateBox, self).__init__()
@@ -296,7 +293,6 @@ class DateBox(QWidget):
 
         html_path = make_html(cur_vehicle, cur_date)
         browser.load(QUrl(html_path))
-
 
 
     def selectionchange(self,i):
@@ -367,7 +363,6 @@ if __name__ == "__main__":
     cur_date = date_list[0]                      
 
     app = QApplication(['Hawkeye v1.0'])
-
 
     # create grid layout
     grid = QGridLayout()

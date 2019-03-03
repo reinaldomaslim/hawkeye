@@ -7,7 +7,6 @@ sudo apt-get install python-pip
 pip install googlemaps
 pip install gmplot
 
-
 #### set autorun via .bashrc, 
 #remove login by adding /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf file. 
 #greeter-session=lightdm-gtk-greeter 
