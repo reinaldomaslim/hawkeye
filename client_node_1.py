@@ -45,28 +45,28 @@ if __name__ == '__main__':
     cnt = 0
 
     try:
-        gpsp.start() # start it up
-        while True:
-            currentDT = datetime.datetime.now()
-            date = currentDT.strftime("%d_%m_%Y")
-            duration = str(currentDT).split(' ')[-1].split(':')            
-            current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
-        
-            if cnt%rpf == 0:
-                #vehicleID + date + time
-                file_name = dir_path+'/data/client/new/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
-                f = open(file_name, 'w')
-                cnt = 0
+		gpsp.start() # start it up
+		while True:
+		    currentDT = datetime.datetime.now()
+		    date = currentDT.strftime("%d_%m_%Y")
+		    duration = str(currentDT).split(' ')[-1].split(':')            
+		    current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
+		
+		    if cnt%rpf == 0:
+		        #vehicleID + date + time
+		        file_name = './data/client/new/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
+		        f = open(file_name, 'w')
+		        cnt = 0
 				 					
-            #It may take a second or two to get good data
-            #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
-            text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
+		    #It may take a second or two to get good data
+		    #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
+		    text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
 
-            f.write(text)		
-            print(text)
-            cnt += 1
-            time.sleep(spc) #set to whatever
-            gpsd.next()        
+		    f.write(text)		
+		    print(text)
+		    cnt += 1
+		    time.sleep(spc) #set to whatever
+		    gpsd.next()        
 
     except: #when you press ctrl+c
         print("\nKilling Thread...")
