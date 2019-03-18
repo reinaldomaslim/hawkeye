@@ -11,6 +11,7 @@ import time
 import threading
 import datetime
 import config
+import math
 
 
 ##### NODE 1 for CLIENT #####
@@ -60,7 +61,10 @@ if __name__ == '__main__':
 				 					
 		    #It may take a second or two to get good data
 		    #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
-		    text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
+			text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
+            
+			if gpsd.fix.latitude == 0 or math.isnan(gpsd.fix.latitude):
+				continue
 
 		    f.write(text)		
 		    print(text)
