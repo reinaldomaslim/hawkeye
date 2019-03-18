@@ -115,9 +115,10 @@ def make_html(veh_id, date):
             if j == 1:
                 gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, config.API_KEY)
             
-            #plot raw path
-            gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
-            gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
+            if raw_path.shape[0] > 0:
+                #plot raw path
+                gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
+                gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
 
             stop_cnt = 0
 
