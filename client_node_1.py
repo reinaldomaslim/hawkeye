@@ -64,9 +64,9 @@ if __name__ == '__main__':
 			text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
             
 			if gpsd.fix.latitude == 0 or math.isnan(gpsd.fix.latitude):
-				continue
-
-		    f.write(text)		
+				print('no signal')
+		    else:
+				f.write(text)	
 		    print(text)
 		    cnt += 1
 		    time.sleep(spc) #set to whatever

@@ -73,11 +73,6 @@ if __name__ == '__main__':
         print(ftxts)
         for ftxt in ftxts:
             print(ftxt)
-            #if text is empty or only nan and zeros, delete
-            statinfo = os.stat(ftxt)
-            if statinfo.st_size == 0:
-                print('remove file')
-                os.remove(ftxt)
 
             name = ftxt.split('/')[-1].split('.')[0]
             txt_date = name.split('_')[1:4]
@@ -85,10 +80,20 @@ if __name__ == '__main__':
 			
             print(current_time, txt_time, is_older(current_date, txt_date))
             if is_older(current_date, txt_date) > 0:
+                #if text is empty or only nan and zeros, delete
+                statinfo = os.stat(ftxt)
+                if statinfo.st_size == 0:
+                    print('remove file')
+                    os.remove(ftxt)
                 #send file
                 send_file(ftxt)
                 sent.append(ftxt)
             if is_older(current_date, txt_date) == 0 and (current_time - txt_time) > 60*20:
+                #if text is empty or only nan and zeros, delete
+                statinfo = os.stat(ftxt)
+                if statinfo.st_size == 0:
+                    print('remove file')
+                    os.remove(ftxt)
                 #send file
                 send_file(ftxt)
                 sent.append(ftxt)
