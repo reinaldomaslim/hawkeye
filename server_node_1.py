@@ -7,6 +7,9 @@
 import os
 import socket             
 import config
+from shutil import copyfile
+
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 ##### NODE 1 for SERVER #####
@@ -21,7 +24,8 @@ if __name__ == '__main__':
     host = socket.gethostname()     # Get local machine name
     port = config.port              # Reserve a port for your service.
     
-    s.bind(('', port))              # Bind to the port
+    s.bind(('0.0.0.0', port))              # Bind to the port
+
     s.listen(30)                    # Now wait for client connection, queue up to 30 channels
 
     while True:
@@ -30,7 +34,8 @@ if __name__ == '__main__':
             print('Got connection from', addr)
             l = c.recv(1024)
             print(l)
-            f = open(dir_path+'/data/server/text/'+l,'w')
+            fpath = dir_path+'/data/server/text/'+l
+            f = open(fpath,'w')
 
             while True:
                 l = c.recv(1024)
@@ -39,7 +44,8 @@ if __name__ == '__main__':
                 f.write(l)
                     
             f.close()
-            c.close()                # Close the connection    
+            c.close()                # Close the connection 
+            copyfile(fpath, dir_path+'/data/server/backup/'+l)
             print("Done Receiving")
         except:
             print('Exiting Server')
