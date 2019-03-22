@@ -67,6 +67,7 @@ if __name__ == '__main__':
 				print('no signal')
 		    else:
 				f.write(text)	
+				
 		    print(text)
 		    cnt += 1
 		    time.sleep(spc) #set to whatever
