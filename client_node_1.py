@@ -55,7 +55,7 @@ if __name__ == '__main__':
 		
 		    if cnt%rpf == 0:
 		        #vehicleID + date + time
-		        file_name = './data/client/new/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
+		        file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
 		        f = open(file_name, 'w')
 		        cnt = 0
 				 					
