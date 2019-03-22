@@ -12,7 +12,7 @@ do
 	rsync -avz -e "ssh -i ~/Documents/hawkeye/LightsailDefaultKey-ap-southeast-1.pem" $HOME/Documents/hawkeye/data/client/* ubuntu@3.0.67.37:/home/ubuntu/Documents/hawkeye/data/server/text/ 
 	rsync -avz --remove-source-files -e "ssh -i ~/Documents/hawkeye/LightsailDefaultKey-ap-southeast-1.pem" $HOME/Documents/hawkeye/data/client/* ubuntu@3.0.67.37:/home/ubuntu/Documents/hawkeye/data/server/backup/
 
-	sleep 60
+	sleep 60*15
 done
 
 #gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py" \
