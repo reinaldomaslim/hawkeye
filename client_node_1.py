@@ -12,7 +12,7 @@ import threading
 import datetime
 import config
 import math
-
+import subprocess
 
 ##### NODE 1 for CLIENT #####
 # this node reads gps, and constantly write to txt file #
@@ -54,6 +54,8 @@ if __name__ == '__main__':
 			current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
 			
 			if cnt%rpf == 0:
+                subprocess.call(['./client_send_msg.sh'])
+
 				#vehicleID + date + time
 				file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
 		        f = open(file_name, 'w')
@@ -63,7 +65,6 @@ if __name__ == '__main__':
 			#print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
 			text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
             
-
 			f.write(text)	
 			print(text)
 			cnt += 1
