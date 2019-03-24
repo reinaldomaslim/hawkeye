@@ -63,12 +63,13 @@ if __name__ == '__main__':
 			#print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
 			text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
             
+
 			f.write(text)	
 			print(text)
 			cnt += 1
 			time.sleep(spc) #set to whatever
 			gpsd.next() 	       
-
+			
     except: #when you press ctrl+c
         print("\nKilling Thread...")
         gpsp.running = False

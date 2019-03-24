@@ -139,6 +139,7 @@ def make_html(veh_id, date):
             #color code: stop-fast | red-blue 
             for i in range(len(snapped_path)-1):
                 dist = distance(snapped_path[i], snapped_path[i+1])
+                
                 speed = dist/(time[i+1] - time[i])
                 if speed < 1:
                     #essentially stop
