@@ -44,7 +44,7 @@ if __name__ == '__main__':
     spc = config.spc #how many sec per capture, every 5 seconds
     rpf = config.rpf_min*60/spc # how many readings per file, every 15 minutes
     cnt = 0
-
+    
     try:
 		gpsp.start() # start it up
 		while True:
@@ -54,6 +54,7 @@ if __name__ == '__main__':
 			current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
 			
 			if cnt%rpf == 0:
+                
                 subprocess.call(['./client_send_msg.sh'])
 
 				#vehicleID + date + time
