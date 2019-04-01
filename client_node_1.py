@@ -48,6 +48,7 @@ if __name__ == '__main__':
     cnt = 0
     start = True
     #try:
+
         #gpsp.start() # start it up
     while True:
         currentDT = datetime.datetime.now()       

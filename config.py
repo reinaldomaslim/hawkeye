@@ -10,3 +10,4 @@ API_KEY = 'AIzaSyAHdCBMRDn3r2D9C834-n658tLpme6_RYY'
 port = 6677
 keyfile = './LightsailDefaultKey-ap-southeast-1.pem'
 colors = ['aqua', 'saddlebrown', 'plum', 'papayawhip', 'mediumspringgreen', 'peru', 'powderblue', 'tan', 'teal', 'mediumorchid', 'linen', 'indigo', 'darkmagenta', 'cornflowerblue']
+7
