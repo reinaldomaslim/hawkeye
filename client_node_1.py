@@ -46,36 +46,42 @@ if __name__ == '__main__':
     spc = config.spc #how many sec per capture, every 5 seconds
     rpf = config.rpf_min*60/spc # how many readings per file, every 15 minutes
     cnt = 0
-
-    try:
+    start = True
+    #try:
         #gpsp.start() # start it up
-        while True:
-            currentDT = datetime.datetime.now()       
-            date = currentDT.strftime("%d_%m_%Y")
-            duration = str(currentDT).split(' ')[-1].split(':')            
-            current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
-	
-            if cnt%rpf == 0:
-                subprocess.call(['./client_send_msg.sh'])
+    while True:
+        currentDT = datetime.datetime.now()       
+        date = currentDT.strftime("%d_%m_%Y")
+        duration = str(currentDT).split(' ')[-1].split(':')            
+        current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
 
-                #vehicleID + date + time
-                file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
-                f = open(file_name, 'w')
-                cnt = 0
+        if cnt%rpf == 0:
+            
+            if start:
+                start = False
+            else:
+                f.close()
+            time.sleep(1)                        
+            subprocess.call(['./client_send_msg.sh'])
 
-            print('----')      					
-            #It may take a second or two to get good data
-            #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
-            text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
+            #vehicleID + date + time
+            file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
+            f = open(file_name, 'w')
+            cnt = 0
 
-            f.write(text)	
-            print(text)
-            cnt += 1
-            time.sleep(spc) #set to whatever
-            gpsd.next() 	       
+        print('----')      					
+        #It may take a second or two to get good data
+        #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
+        text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
+        
+        f.write(text)	
+        print(text)
+        cnt += 1
+        time.sleep(spc) #set to whatever
+        gpsd.next() 	       
 
-    except: #when you press ctrl+c
-        print("\nKilling Thread...")
+    #except: #when you press ctrl+c
+    #    print("\nKilling Thread...")
         #gpsp.running = False
         #gpsp.join() # wait for the thread to finish what it's doing
 
