@@ -373,21 +373,27 @@ if __name__ == "__main__":
     ftxts = glob.glob(dir_path+'/data/station/text/*.txt')
     vehicle_list = []
     date_list = []
-
+    reverse_date_list = []
     for ftxt in ftxts:
         name = ftxt.split('/')[-1].split('.')[0].split('_')
         vehicle = name [0]
         date = name[1]+'_'+name[2]+'_'+name[3]
+        reverse_date = name[3]+'_'+name[2]+'_'+name[1]
 
         if vehicle not in vehicle_list:
             vehicle_list.append(vehicle)
 
         if date not in date_list:
             date_list.append(date)
+            reverse_date_list.append(reverse_date)
+
 
     vehicle_list.sort()
     vehicle_list.insert(0, 'all')
-    date_list.sort(reverse=True)
+
+    # date_list.sort(reverse=True)
+    date_list = [x for _,x in sorted(zip(reverse_date_list, date_list), reverse=True)]
+
 
     cur_vehicle = vehicle_list[0]               
     cur_date = date_list[0]                      
