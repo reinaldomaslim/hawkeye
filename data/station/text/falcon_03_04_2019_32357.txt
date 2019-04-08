@@ -1,0 +1,14 @@
+0.0 0.0 32357
+0.0 0.0 32366
+0.0 0.0 32371
+0.0 0.0 32411
+nan nan 32416
+nan nan 32421
+nan nan 32426
+nan nan 32431
+nan nan 32436
+nan nan 32441
+nan nan 32446
+nan nan 32451
+nan nan 32456
+nan nan 32461
