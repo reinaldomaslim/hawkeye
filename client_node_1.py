@@ -44,9 +44,9 @@ if __name__ == '__main__':
             
     veh_id = config.veh_id
     spc = config.spc #how many sec per capture, every 5 seconds
-    rpf = config.rpf_min*60/spc # how many readings per file, every 15 minutes
+    rpf = int(config.rpf_min*60/spc) # how many readings per file, every 15 minutes
     cnt = 0
-
+    start = True
     while True:
         currentDT = datetime.datetime.now()       
         date = currentDT.strftime("%d_%m_%Y")
@@ -56,13 +56,16 @@ if __name__ == '__main__':
         if cnt%rpf == 0:
             time.sleep(1)                        
             subprocess.call(['./client_send_msg.sh'])
-
+            if start:
+                start = False
+            else:
+                f.close()
             #vehicleID + date + time
             file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
-            f = open(file_name, 'w')
+            f = open(file_name, 'w', 0)
             cnt = 0
         else:
-            f = open(file_name, 'a')
+            f = open(file_name, 'a', 0)
 
         print('--------------------')      					
         #It may take a second or two to get good data
@@ -71,7 +74,7 @@ if __name__ == '__main__':
         
         f.write(text)	
         print(text)
-        f.close()
+        #f.close()
 
         cnt += 1
         time.sleep(spc) #set to whatever
