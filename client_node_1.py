@@ -42,7 +42,6 @@ if __name__ == '__main__':
     gpsp = GpsPoller() # create the thread
     try:    
         gpsp.start()
-        #gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
                 
         veh_id = config.veh_id
         spc = config.spc #how many sec per capture, every 5 seconds
@@ -55,28 +54,27 @@ if __name__ == '__main__':
             duration = str(currentDT).split(' ')[-1].split(':')            
             current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
 
-            #if cnt%rpf == 0:
-            #    time.sleep(1)                        
-            #    subprocess.call(['./client_send_msg.sh'])
-            #    if start:
-            #        start = False
-            #    else:
-            #        f.close()
-            #    #vehicleID + date + time
-            #    file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
-            #    f = open(file_name, 'w')
-            #    cnt = 0
-            #else:
-            #    f = open(file_name, 'a', 0)
+            if cnt%rpf == 0:
+               time.sleep(1)                        
+               subprocess.call(['./client_send_msg.sh'])
+               if start:
+                   start = False
+               else:
+                   f.close()
+               #vehicleID + date + time
+               file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
+               f = open(file_name, 'w')
+               cnt = 0
+            else:
+               f = open(file_name, 'a', 0)
 
             print('--------------------')      					
             #It may take a second or two to get good data
             #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
             text = str(gpsd.fix.latitude)+' '+str(gpsd.fix.longitude)+' '+str(current_time)+'\n' 		    
             
-            #f.write(text)	
+            f.write(text)	
             print(text)
-            #f.close()
 
             cnt += 1
             time.sleep(spc) #set to whatever
