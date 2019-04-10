@@ -141,8 +141,8 @@ def make_html(veh_id, date):
             #color code: stop-fast | red-blue 
             for i in range(len(snapped_path)-1):
                 dist = distance(snapped_path[i], snapped_path[i+1])
-                
-                speed = dist/(time[i+1] - time[i])
+                delta_time = max(time[i+1] - time[i], 1)
+                speed = dist/delta_time
                 if speed < 1:
                     #essentially stop
                     stop_cnt += 1
@@ -233,7 +233,8 @@ def make_html(veh_id, date):
             dist = distance(snapped_path[i], snapped_path[i+1])
             total_dist += dist
             total_time += time[i+1] - time[i]
-            speed = dist/(time[i+1] - time[i])
+            delta_time = max(time[i+1] - time[i], 1)
+            speed = dist/delta_time
             if speed < 1:
                 #essentially stop
                 color = 'red'
@@ -373,7 +374,7 @@ def keyHandler(e):
 ##### MAIN #####
 
 if __name__ == "__main__":
-    print("station Node 2: GUI and Analytics") 
+    print("station Node 1: GUI and Analytics") 
 
     ftxts = glob.glob(dir_path+'/data/station/text/*.txt')
     vehicle_list = []
