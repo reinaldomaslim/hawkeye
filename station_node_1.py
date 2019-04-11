@@ -88,10 +88,12 @@ def make_html(veh_id, date):
                         continue
 
                     msg = line.split(' ')
-                    lat = float(msg[0])
-                    lon = float(msg[1])
-                    clock = float(msg[2])
-
+                    try:
+                        lat = float(msg[0])
+                        lon = float(msg[1])
+                        clock = float(msg[2])
+                    except:
+                        continue
                     #sanity checks
                     if np.isnan(lat) or np.isnan(lon):
                         continue
@@ -175,10 +177,12 @@ def make_html(veh_id, date):
                     continue
 
                 msg = line.split(' ')
-                lat = float(msg[0])
-                lon = float(msg[1])
-                clock = float(msg[2])
-
+                try:
+                    lat = float(msg[0])
+                    lon = float(msg[1])
+                    clock = float(msg[2])
+                except:
+                    continue
                 #sanity checks
                 if np.isnan(lat) or np.isnan(lon):
                     continue
