@@ -88,10 +88,12 @@ def make_html(veh_id, date):
                         continue
 
                     msg = line.split(' ')
-                    lat = float(msg[0])
-                    lon = float(msg[1])
-                    clock = float(msg[2])
-
+                    try:
+                        lat = float(msg[0])
+                        lon = float(msg[1])
+                        clock = float(msg[2])
+                    except:
+                        continue
                     #sanity checks
                     if np.isnan(lat) or np.isnan(lon):
                         continue
@@ -139,7 +141,8 @@ def make_html(veh_id, date):
             #color code: stop-fast | red-blue 
             for i in range(len(snapped_path)-1):
                 dist = distance(snapped_path[i], snapped_path[i+1])
-                speed = dist/(time[i+1] - time[i])
+                delta_time = max(time[i+1] - time[i], 1)
+                speed = dist/delta_time
                 if speed < 1:
                     #essentially stop
                     stop_cnt += 1
@@ -174,10 +177,13 @@ def make_html(veh_id, date):
                     continue
 
                 msg = line.split(' ')
-                lat = float(msg[0])
-                lon = float(msg[1])
-                clock = float(msg[2])
-
+                try:
+                    lat = float(msg[0])
+                    lon = float(msg[1])
+                    clock = float(msg[2])
+                except:
+                    continue
+                    
                 #sanity checks
                 if np.isnan(lat) or np.isnan(lon):
                     continue
@@ -227,7 +233,8 @@ def make_html(veh_id, date):
             dist = distance(snapped_path[i], snapped_path[i+1])
             total_dist += dist
             total_time += time[i+1] - time[i]
-            speed = dist/(time[i+1] - time[i])
+            delta_time = max(time[i+1] - time[i], 1)
+            speed = dist/delta_time
             if speed < 1:
                 #essentially stop
                 color = 'red'
@@ -367,26 +374,32 @@ def keyHandler(e):
 ##### MAIN #####
 
 if __name__ == "__main__":
-    print("station Node 2: GUI and Analytics") 
+    print("station Node 1: GUI and Analytics") 
 
     ftxts = glob.glob(dir_path+'/data/station/text/*.txt')
     vehicle_list = []
     date_list = []
-
+    reverse_date_list = []
     for ftxt in ftxts:
         name = ftxt.split('/')[-1].split('.')[0].split('_')
         vehicle = name [0]
         date = name[1]+'_'+name[2]+'_'+name[3]
+        reverse_date = name[3]+'_'+name[2]+'_'+name[1]
 
         if vehicle not in vehicle_list:
             vehicle_list.append(vehicle)
 
         if date not in date_list:
             date_list.append(date)
+            reverse_date_list.append(reverse_date)
+
 
     vehicle_list.sort()
     vehicle_list.insert(0, 'all')
-    date_list.sort(reverse=True)
+
+    # date_list.sort(reverse=True)
+    date_list = [x for _,x in sorted(zip(reverse_date_list, date_list), reverse=True)]
+
 
     cur_vehicle = vehicle_list[0]               
     cur_date = date_list[0]                      
