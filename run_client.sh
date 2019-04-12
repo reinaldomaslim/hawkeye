@@ -8,7 +8,7 @@ sudo killall gpsd
 sudo gpsd  /dev/ttyUSB0 -F  /var/run/gpsd.sock
 
 #sleep wait for gps to be up
-sleep 1
+sleep 5
 gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py"
 
 #gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py" \

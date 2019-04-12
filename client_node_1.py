@@ -82,6 +82,7 @@ if __name__ == '__main__':
 
     except: #when you press ctrl+c
         print("\nKilling Thread...")
+        f.close()
         gpsp.running = False
         gpsp.join() # wait for the thread to finish what it's doing
 
