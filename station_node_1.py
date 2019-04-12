@@ -183,7 +183,7 @@ def make_html(veh_id, date):
                     clock = float(msg[2])
                 except:
                     continue
-
+                    
                 #sanity checks
                 if np.isnan(lat) or np.isnan(lon):
                     continue

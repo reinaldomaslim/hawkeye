@@ -3,19 +3,18 @@
 ###################
 ##### HAWKEYE #####
 ###################
-
+import os
 import json
 import glob
 
 ##### MAIN #####
 
 if __name__ == "__main__":
-    print("station Node 2: convert geojson files to txt for station node 1") 
+    print("station Node 2: convert geojson files to txt") 
 
     files = glob.glob('./data/station/android/*.geojson')
     for file in files:
         f = open(file)
-        
         profile = file.split('/')[-1].split('_')[0]
         day = file.split('/')[-1].split('_')[1][:2]
         month = file.split('/')[-1].split('_')[1][2:4]
@@ -24,10 +23,10 @@ if __name__ == "__main__":
         clock = str(int(file.split('/')[-1].split('_')[-1].split('.')[0])*3600)
         text_path = './data/station/text/' + profile +'_'+ day +'_'+ month +'_'+ year +'_'+clock+'.txt'
         
-        print(text_path)
         if os.path.isfile(text_path):
             continue
 
+        print(text_path)
         res = open(text_path, 'w')
 
         data = json.load(f)
