@@ -12,6 +12,7 @@ import sys
 import config
 import datetime
 import math
+import time
 from googlemaps import convert
 from gmplot import gmplot
 from math import sin, cos, sqrt, atan2, radians
@@ -23,6 +24,9 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 ####################### NODE 1 for station ###########################
 ##### this node performs gui, analytics, and generate html maps #####
 #####################################################################
+
+#### sleep to wait download new files and conversion
+time.sleep(3)
 
 ##### INIT GMAPS #####
 
@@ -72,12 +76,10 @@ def make_html(veh_id, date):
             veh = vehicle_list[j]
             ftxts = glob.glob(dir_path+'/data/station/text/'+veh+'_'+date+'*.txt')
             ftxts.sort()
-
             snapped_path = []
             raw_path = []
             time = []
             
-
             for ftxt in ftxts:
                 f = open(ftxt, 'r')
                 lines = f.readlines()
@@ -143,6 +145,11 @@ def make_html(veh_id, date):
                 dist = distance(snapped_path[i], snapped_path[i+1])
                 delta_time = max(time[i+1] - time[i], 1)
                 speed = dist/delta_time
+
+                if dist > 200 and delta_time>200:   
+                    #separate ride
+                    continue
+
                 if speed < 1:
                     #essentially stop
                     stop_cnt += 1
@@ -226,7 +233,6 @@ def make_html(veh_id, date):
         stop_cnt = 0
         total_dist = 0
         total_time = 0
-        print(len(snapped_path), len(time))
 
         #color code: stop-fast | red-blue 
         for i in range(len(snapped_path)-1):
@@ -235,6 +241,11 @@ def make_html(veh_id, date):
             total_time += time[i+1] - time[i]
             delta_time = max(time[i+1] - time[i], 1)
             speed = dist/delta_time
+
+            if dist > 200 and delta_time>200:   
+                #separate ride
+                continue
+
             if speed < 1:
                 #essentially stop
                 color = 'red'
@@ -267,6 +278,7 @@ def make_html(veh_id, date):
         gmap.scatter([snapped_path[-1, 0]], [snapped_path[-1, 1]], 'blue', size=5, marker=True)
         res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
         last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
+        
         hour = int(time[-1]/3600)
         minutes = int((time[-1]-hour*3600)/60)
         sec = int(time[-1]-hour*3600-minutes*60)
@@ -308,12 +320,11 @@ class VehicleBox(QWidget):
         cur_vehicle = str(self.cb.currentText())
 
         html_path = make_html(cur_vehicle, cur_date)
-        if html_path is not None:
-            browser.load(QUrl(html_path))
+        load_html(html_path)
 
-            if app.focusWidget() is not None:    
-                app.focusWidget().clearFocus()
-        
+        if app.focusWidget() is not None:    
+            app.focusWidget().clearFocus()
+    
 class DateBox(QWidget):
     def __init__(self, items):
         super(DateBox, self).__init__()
@@ -326,9 +337,8 @@ class DateBox(QWidget):
         layout.addWidget(self.cb)
         self.setLayout(layout)
 
-        html_path = make_html(cur_vehicle, cur_date)
-        if html_path is not None:
-            browser.load(QUrl(html_path))
+        html_path = make_html(cur_vehicle, cur_date)    
+        load_html(html_path)
 
 
     def selectionchange(self,i):
@@ -336,8 +346,7 @@ class DateBox(QWidget):
         cur_date = str(self.cb.currentText())
 
         html_path = make_html(cur_vehicle, cur_date)
-        browser.load(QUrl(html_path))
-
+        load_html(html_path)
 
         if app.focusWidget() is not None:    
             app.focusWidget().clearFocus()
@@ -346,7 +355,13 @@ def onTimer():
     #refresh page for new files
     global cur_vehicle, cur_date
     html_path = make_html(cur_vehicle, cur_date)
-    browser.load(QUrl(html_path))
+    load_html(html_path)
+
+def load_html(path):
+    try:
+        browser.load(QUrl(path))
+    except:
+        browser.load(QUrl(not_found_path))
 
 def keyHandler(e):
     global vehicle_box, date_box, app
@@ -375,7 +390,7 @@ def keyHandler(e):
 
 if __name__ == "__main__":
     print("station Node 1: GUI and Analytics") 
-
+    not_found_path = dir_path+'/data/station/html/404.html'
     ftxts = glob.glob(dir_path+'/data/station/text/*.txt')
     vehicle_list = []
     date_list = []

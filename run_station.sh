@@ -4,8 +4,6 @@ echo "project of reinaldomaslim"
 
 #sleep wait for wifi to be up
 # sleep 5
-
-
 gnome-terminal --tab -e  "python station_node_1.py"
 
 while true 

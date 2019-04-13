@@ -6,7 +6,7 @@
 import os
 import json
 import glob
-
+import config
 ##### MAIN #####
 
 if __name__ == "__main__":
@@ -36,20 +36,16 @@ if __name__ == "__main__":
 
             if provider == 'network':
                 continue
-            print(provider, accuracy)
-
 
             time = feature['properties']['time']
-            h = int(time.split('T')[-1].split(':')[0])
+            h = int(time.split('T')[-1].split(':')[0]) + config.timezone
             m = int(time.split('T')[-1].split(':')[1])
             s = float(time.split('T')[-1].split(':')[-1][:6])
             clock = 3600*h+60*m+int(s)
             lon = feature['geometry']['coordinates'][0]
             lat = feature['geometry']['coordinates'][1]
-            print(lat, lon, clock)
 
             text = str(lat) +' '+ str(lon)+' '+str(clock)+'\n'
-            # break
             res.write(text)
 
         res.close()
