@@ -146,7 +146,7 @@ def make_html(veh_id, date):
                 delta_time = max(time[i+1] - time[i], 1)
                 speed = dist/delta_time
 
-                if dist > 200 and delta_time>200:   
+                if dist > 1000 or delta_time > 1000:   
                     #separate ride
                     continue
 
@@ -241,8 +241,8 @@ def make_html(veh_id, date):
             total_time += time[i+1] - time[i]
             delta_time = max(time[i+1] - time[i], 1)
             speed = dist/delta_time
-
-            if dist > 200 and delta_time>200:   
+            
+            if dist > 1000 or delta_time > 1000:   
                 #separate ride
                 continue
 

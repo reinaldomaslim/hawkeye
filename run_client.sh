@@ -13,9 +13,12 @@ sudo gpsd  /dev/ttyUSB0 -F  /var/run/gpsd.sock
 #sleep wait for gps to be up
 echo "wait for gps"
 sleep 2
-gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py"
+gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py"\
+               --tab -e "cgps"
 
-cgps
-
-#gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py" \
-#               --tab --working-directory=$HOME/Documents/hawkeye -e "python client_node_2.py"
+while true 
+do
+	#need to copy from server
+	python housekeeper.py
+	sleep 24*3600
+done
