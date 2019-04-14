@@ -20,5 +20,5 @@ while true
 do
 	#need to copy from server
 	python housekeeper.py
-	sleep 24*3600
+	sleep 86400
 done

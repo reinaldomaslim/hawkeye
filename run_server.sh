@@ -11,5 +11,5 @@ do
 	#need to copy from server
 	python housekeeper.py
 	#sleep for today
-	sleep 24*3600
+	sleep 86400
 done
