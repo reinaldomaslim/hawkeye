@@ -41,4 +41,6 @@ On Rpi3 Client
 Notes:
 1. Android phones must not use power saving mode
 2. Rpi3 client need 5V w sufficient current (1-2A)
+3. Path colors coding: red-very slow, green-average, blue-fast
+4. Flags: green-starting point, blue-last position, orange-short stops, red-long stops
 _______________________________________________________________________
