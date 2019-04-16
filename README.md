@@ -18,7 +18,8 @@ Nodes:
 3. Rpi3 Client
 4. Android Client
 
-Instructions:
+Setup Instructions:
+
 On Station Machine
 1. clone repo
 2. run setup.sh
