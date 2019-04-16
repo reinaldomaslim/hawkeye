@@ -1,4 +1,0 @@
-TODO
-1. add server housekeeper
-2. add station housekeeper
-3. add client housekeeper

@@ -11,7 +11,7 @@ files = glob.glob('./data/*/*/*')
 now = time.time()
 
 for path in files:
-	print(path)
+	# print(path)
 	modif_time = os.path.getmtime(path) 
 	diff = now-modif_time	
 	
