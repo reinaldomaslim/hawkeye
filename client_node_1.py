@@ -63,7 +63,8 @@ if __name__ == '__main__':
                    f.close()
                #vehicleID + date + time
                file_name = './data/client/'+veh_id+'_'+date+'_'+str(current_time)+'.txt'
-               f = open(file_name, 'w')
+               print(file_name)
+               f = open(file_name, 'w')               
                cnt = 0
             else:
                f = open(file_name, 'a', 0)
@@ -82,6 +83,7 @@ if __name__ == '__main__':
 
     except: #when you press ctrl+c
         print("\nKilling Thread...")
+        f.close()
         gpsp.running = False
         gpsp.join() # wait for the thread to finish what it's doing
 

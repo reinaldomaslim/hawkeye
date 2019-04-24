@@ -11,7 +11,7 @@ from shutil import copyfile
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-
+print(dir_path)
 ##### NODE 1 for SERVER #####
 # this node listens to clients and receive txt data #
 

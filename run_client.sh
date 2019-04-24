@@ -2,14 +2,23 @@
 echo "Hawkeye Client"
 echo "project of reinaldomaslim"
 
+#check for internet, so time is correct
+sleep 2
+
 sudo systemctl stop gpsd.socket
 sudo systemctl disable gpsd.socket
 sudo killall gpsd
 sudo gpsd  /dev/ttyUSB0 -F  /var/run/gpsd.sock
 
 #sleep wait for gps to be up
-sleep 1
-gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py"
+echo "wait for gps"
+sleep 2
+gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py"\
+               --tab -e "cgps"
 
-#gnome-terminal --tab --working-directory=$HOME/Documents/hawkeye/ -e "python client_node_1.py" \
-#               --tab --working-directory=$HOME/Documents/hawkeye -e "python client_node_2.py"
+while true 
+do
+	#need to copy from server
+	python housekeeper.py
+	sleep 86400
+done
