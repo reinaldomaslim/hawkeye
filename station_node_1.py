@@ -13,6 +13,7 @@ import config
 import datetime
 import math
 import time
+import random
 from googlemaps import convert
 from gmplot import gmplot
 from math import sin, cos, sqrt, atan2, radians
@@ -51,256 +52,175 @@ def distance(pt1, pt2):
 
     return distance
 
+def snap(path, time):
+    snapped_path = []
+    cnt = 100
+
+    for i in range(int(len(path)/cnt)):
+        #use gmaps service to snap to road, cannot accept nan
+        snap_road_result = gmaps.snap_to_roads(path[i*cnt:(i+1)*cnt], interpolate = False)
+        for k in snap_road_result:
+            lat = k['location']['latitude']
+            lon = k['location']['longitude']
+            snapped_path.append([lat, lon])
+    
+    snap_road_result = gmaps.snap_to_roads(path[int(len(path)/cnt)*cnt:], interpolate = False)
+    for k in snap_road_result:
+        lat = k['location']['latitude']
+        lon = k['location']['longitude']
+        snapped_path.append([lat, lon])
+    
+    #randomly drop some time
+    for i in range(len(time) - len(snapped_path)):
+        ind = random.randint(0, len(time)-1)
+        time.pop(ind)
+
+    return snapped_path, time
+
 def make_html(veh_id, date):
     #veh_id: e.g. '1', '2', '3'
     #date; e.g. '05_02_2019' 'dd_mm_yyyy'
     html_name = dir_path+'/data/station/html/'+veh_id+'_'+date+'.html'
     status_path = dir_path+'/data/station/html/'+veh_id+'_'+date+'.txt'
-
     currentDT = datetime.datetime.now()
     today_date = currentDT.strftime("%d_%m_%Y")
 
     if date != today_date and os.path.isfile(html_name):
-        
-        if veh_id!='all' and os.path.isfile(status_path):
+        if os.path.isfile(status_path):
             f = open(status_path, 'r')
             status_text = f.readlines()[0]
             status_label.setText(status_text)
             return html_name
 
+    ftxts = glob.glob(dir_path+'/data/station/text/'+veh_id+'_'+date+'*.txt')
+    ftxts.sort()
 
-    if veh_id == 'all':
+    raw_path = []
+    snapped_path = []
+    snapped_time = []
 
-        gmap = None
-        for j in range(1, len(vehicle_list)):
-            veh = vehicle_list[j]
-            ftxts = glob.glob(dir_path+'/data/station/text/'+veh+'_'+date+'*.txt')
-            ftxts.sort()
-            snapped_path = []
-            raw_path = []
-            time = []
-            
-            for ftxt in ftxts:
-                f = open(ftxt, 'r')
-                lines = f.readlines()
-                path = []
+    for ftxt in ftxts:
+        f = open(ftxt, 'r')
+        lines = f.readlines()
+        path = []
+        time = []
 
-                for line in lines:
-                    if len(line) == 0:
-                        continue
-
-                    msg = line.split(' ')
-                    try:
-                        lat = float(msg[0])
-                        lon = float(msg[1])
-                        clock = float(msg[2])
-                    except:
-                        continue
-                    #sanity checks
-                    if np.isnan(lat) or np.isnan(lon):
-                        continue
-                    if lat == 0 or lon == 0:
-                        continue
-
-                    raw_path.append([lat, lon])
-                    path.append([lat, lon])
-                    time.append(clock)
-                
-                if len(path) == 0:
-                    continue
-
-                for i in range(int(len(path)/100)):
-                    #use gmaps service to snap to road, cannot accept nan
-                    snap_road_result = gmaps.snap_to_roads(path[i*100:(i+1)*100], interpolate = False)
-                    for k in snap_road_result:
-                        lat = k['location']['latitude']
-                        lon = k['location']['longitude']
-                        snapped_path.append([lat, lon])
-            
-                snap_road_result = gmaps.snap_to_roads(path[int(len(path)/100)*100:], interpolate = False)
-                for k in snap_road_result:
-                    lat = k['location']['latitude']
-                    lon = k['location']['longitude']
-                    snapped_path.append([lat, lon])
-
-            snapped_path = np.asarray(snapped_path)
-            raw_path = np.asarray(raw_path)
-
-            if len(snapped_path) == 0:
+        for line in lines:
+            if len(line) == 0:
                 continue
 
-            #plot snapped path
-            if gmap is None:
-                gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, config.API_KEY)
-            
-            if raw_path.shape[0] > 0:
-                #plot raw path
-                gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
-                gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
+            msg = line.split(' ')
+            try:
+                lat = float(msg[0])
+                lon = float(msg[1])
+                clock = float(msg[2])
+            except:
+                continue
 
+            if np.isnan(lat) or np.isnan(lon):
+                continue
+            if lat == 0 or lon == 0:
+                continue
+
+            raw_path.append([lat, lon])
+            path.append([lat, lon])
+            time.append(clock)
+
+        if len(path) == 0:
+            continue
+
+        res_path, res_time = snap(path, time)
+        snapped_path.extend(res_path)
+        snapped_time.extend(res_time)
+
+    if len(snapped_path) == 0:
+        return
+
+    snapped_path = np.asarray(snapped_path)
+    raw_path = np.asarray(raw_path)
+
+    #plot snapped path
+    gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, config.API_KEY)
+
+    #plot raw path, heavy 
+    gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
+    # gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
+
+    stop_cnt = 0
+    total_dist = 0
+    total_time = 0
+
+    #color code: stop-fast | red-blue 
+    for i in range(len(snapped_path)-1):
+        dist = distance(snapped_path[i], snapped_path[i+1])
+        total_dist += dist
+        delta_time = max(snapped_time[i+1] - snapped_time[i], config.spc)
+        speed = dist/delta_time
+        
+        if speed < 1:
+            #essentially stop
+            color = 'red'
+            stop_cnt += 1
+        elif speed < 10/3.6:
+            #below 10 kmph
+            color = 'maroon'
+            stop_cnt = 0
+        elif speed < 25/3.6:
+            #below 25 kmph
+            color = 'darkorange'
+            stop_cnt = 0
+        elif speed < 50/3.6:
+            #below 50 kmph
+            color = 'seagreen'
+            stop_cnt = 0
+        else:
+            #> 50 kmph
+            color = 'royalblue'
             stop_cnt = 0
 
-            #color code: stop-fast | red-blue 
-            for i in range(len(snapped_path)-1):
-                dist = distance(snapped_path[i], snapped_path[i+1])
-                delta_time = max(time[i+1] - time[i], 1)
-                speed = dist/delta_time
+        if stop_cnt > 1*60/config.spc: #we wait 5 minutes
+            #stopped for too long, put a flag
+            gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'orange', size=5, marker=True)
+            stop_cnt = 0
 
-                if dist > 1000 or delta_time > 1000:   
-                    #separate ride
-                    continue
+        if dist > 500 or delta_time > 500:   
+            #separate ride
+            gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
+            continue
+        else:
+            total_time += delta_time
 
-                if speed < 1:
-                    #essentially stop
-                    stop_cnt += 1
-                else:
-                    #> 50 kmph
-                    stop_cnt = 0
+        gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
 
-                if stop_cnt > 1*60/config.spc: #we wait 5 minutes
-                    #stopped for too long, put a flag
-                    gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
-                    stop_cnt = 0
+    #starting and current ending point
+    gmap.scatter([snapped_path[0, 0]], [snapped_path[0, 1]], 'green', size=5, marker=True)
+    gmap.scatter([snapped_path[-1, 0]], [snapped_path[-1, 1]], 'blue', size=5, marker=True)
 
-                gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], config.colors[j%len(config.colors)], edge_width=10)
+    res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
+    last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
+    
+    hour = int(snapped_time[-1]/3600)
+    minutes = int((snapped_time[-1]-hour*3600)/60)
+    sec = int(snapped_time[-1]-hour*3600-minutes*60)
+    status_text = ' || updated time: ' + str(hour)+':'+str(minutes)+':'+str(sec)+\
+        ' || total distance: ' + str(round(float(total_dist)/1000, 2))+\
+        ' km || elapsed time: ' + str(float(total_time)/60)+\
+        ' min || average speed: ' + str(round(total_dist*3.6/total_time, 2))+\
+        ' km/h || last position: ' + last_position+\
+        ' ||'
 
-        status_label.setText(' ')
+    status_label.setText(status_text)
 
-    else:
-        ftxts = glob.glob(dir_path+'/data/station/text/'+veh_id+'_'+date+'*.txt')
-        ftxts.sort()
-
-        snapped_path = []
-        raw_path = []
-        time = []
-        
-        for ftxt in ftxts:
-            f = open(ftxt, 'r')
-            lines = f.readlines()
-            path = []
-
-            for line in lines:
-                if len(line) == 0:
-                    continue
-
-                msg = line.split(' ')
-                try:
-                    lat = float(msg[0])
-                    lon = float(msg[1])
-                    clock = float(msg[2])
-                except:
-                    continue
-                    
-                #sanity checks
-                if np.isnan(lat) or np.isnan(lon):
-                    continue
-                if lat == 0 or lon == 0:
-                    continue
-
-                raw_path.append([lat, lon])
-                path.append([lat, lon])
-                time.append(clock)
-            
-            if len(path) == 0:
-                continue
-
-            for i in range(int(len(path)/100)):
-                #use gmaps service to snap to road, cannot accept nan
-                snap_road_result = gmaps.snap_to_roads(path[i*100:(i+1)*100], interpolate = False)
-                for k in snap_road_result:
-                    lat = k['location']['latitude']
-                    lon = k['location']['longitude']
-                    snapped_path.append([lat, lon])
-
-            snap_road_result = gmaps.snap_to_roads(path[int(len(path)/100)*100:], interpolate = False)
-            for k in snap_road_result:
-                lat = k['location']['latitude']
-                lon = k['location']['longitude']
-                snapped_path.append([lat, lon])
-        
-        if len(snapped_path) == 0:
-            return
-
-        snapped_path = np.asarray(snapped_path)
-        raw_path = np.asarray(raw_path)
-
-        #plot snapped path
-        gmap = gmplot.GoogleMapPlotter(snapped_path[int(len(snapped_path)/2)][0], snapped_path[int(len(snapped_path)/2)][1], 15, config.API_KEY)
-        #plot raw path
-        gmap.scatter(raw_path[:, 0], raw_path[:, 1], 'sienna', size=5, marker=False)
-        gmap.scatter(snapped_path[:, 0], snapped_path[:, 1], 'antiquewhite', size=5, marker=False)
-
-        stop_cnt = 0
-        total_dist = 0
-        total_time = 0
-
-        #color code: stop-fast | red-blue 
-        for i in range(len(snapped_path)-1):
-            dist = distance(snapped_path[i], snapped_path[i+1])
-            total_dist += dist
-            total_time += time[i+1] - time[i]
-            delta_time = max(time[i+1] - time[i], 1)
-            speed = dist/delta_time
-            
-            if dist > 1000 or delta_time > 1000:   
-                #separate ride
-                continue
-
-            if speed < 1:
-                #essentially stop
-                color = 'red'
-                stop_cnt += 1
-            elif speed < 10/3.6:
-                #below 10 kmph
-                color = 'maroon'
-                stop_cnt = 0
-            elif speed < 25/3.6:
-                #below 25 kmph
-                color = 'darkorange'
-                stop_cnt = 0
-            elif speed < 50/3.6:
-                #below 50 kmph
-                color = 'seagreen'
-                stop_cnt = 0
-            else:
-                #> 50 kmph
-                color = 'royalblue'
-                stop_cnt = 0
-
-            if stop_cnt > 1*60/config.spc: #we wait 5 minutes
-                #stopped for too long, put a flag
-                gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
-                stop_cnt = 0
-
-            gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
-
-
-        gmap.scatter([snapped_path[-1, 0]], [snapped_path[-1, 1]], 'blue', size=5, marker=True)
-        res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
-        last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
-        
-        hour = int(time[-1]/3600)
-        minutes = int((time[-1]-hour*3600)/60)
-        sec = int(time[-1]-hour*3600-minutes*60)
-        status_text = ' || updated time: ' + str(hour)+':'+str(minutes)+':'+str(sec)+\
-            ' || total distance: ' + str(round(float(total_dist)/1000, 2))+\
-            ' km || elapsed time: ' + str(float(total_time)/60)+\
-            ' min || average speed: ' + str(round(total_dist*3.6/total_time, 2))+\
-            ' km/h || last position: ' + last_position+\
-            ' ||'
-
-        status_label.setText(status_text)
-
-        f = open(status_path, 'w')
-        f.write(status_text)
-        f.close()
+    f = open(status_path, 'w')
+    f.write(status_text)
+    f.close()
 
     if gmap is not None:
         #save plot as html
         gmap.draw(html_name)
-        
         return html_name
-    return
+
+    return 
 ##### INIT WIDGETS #####
 
 class VehicleBox(QWidget):
@@ -357,11 +277,11 @@ def onTimer():
     html_path = make_html(cur_vehicle, cur_date)
     load_html(html_path)
 
-def load_html(path):
+def load_html(path):    
     try:
         browser.load(QUrl(path))
     except:
-        browser.load(QUrl(not_found_path))
+        browser.load(QUrl(config.not_found_path))
 
 def keyHandler(e):
     global vehicle_box, date_box, app
@@ -390,7 +310,7 @@ def keyHandler(e):
 
 if __name__ == "__main__":
     print("station Node 1: GUI and Analytics") 
-    not_found_path = dir_path+'/data/station/html/404.html'
+    
     ftxts = glob.glob(dir_path+'/data/station/text/*.txt')
     vehicle_list = []
     date_list = []
@@ -410,11 +330,7 @@ if __name__ == "__main__":
 
 
     vehicle_list.sort()
-    vehicle_list.insert(0, 'all')
-
-    # date_list.sort(reverse=True)
     date_list = [x for _,x in sorted(zip(reverse_date_list, date_list), reverse=True)]
-
 
     cur_vehicle = vehicle_list[0]               
     cur_date = date_list[0]                      
