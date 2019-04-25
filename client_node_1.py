@@ -55,7 +55,8 @@ if __name__ == '__main__':
             current_time = int(float(duration[0])*3600+float(duration[1])*60+float(duration[2]))
 
             if cnt%rpf == 0:
-               time.sleep(1)                        
+               time.sleep(1)   
+				                     
                subprocess.call(['./client_send_msg.sh'])
                if start:
                    start = False
