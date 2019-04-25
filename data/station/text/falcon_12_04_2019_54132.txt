@@ -1,5 +1,0 @@
-0.0 0.0 54132
-nan nan 54141
-nan nan 54148
-nan nan 54154
-nan nan 54160
