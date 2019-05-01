@@ -1,0 +1,5 @@
+TODO list
+
+1. webpage view to replace current ground station
+2. android app for station
+3. dashcam features for client app

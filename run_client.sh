@@ -5,9 +5,9 @@ echo "project of reinaldomaslim"
 #check for internet, so time is correct
 sleep 2
 
-sudo systemctl stop gpsd.socket
-sudo systemctl disable gpsd.socket
-sudo killall gpsd
+#sudo systemctl stop gpsd.socket
+#sudo systemctl disable gpsd.socket
+#sudo killall gpsd
 sudo gpsd  /dev/ttyUSB0 -F  /var/run/gpsd.sock
 
 #sleep wait for gps to be up

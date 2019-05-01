@@ -1,7 +1,0 @@
-nan nan 44003
-nan nan 44012
-nan nan 44030
-nan nan 44036
-nan nan 44042
-nan nan 44048
-nan nan 44054
