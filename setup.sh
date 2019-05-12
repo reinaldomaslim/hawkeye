@@ -6,6 +6,7 @@ sudo apt-get install python-qt4
 sudo apt-get install python-pip
 pip install googlemaps
 pip install gmplot
+pip install flask
 
 #### set autorun via .bashrc, 
 #remove login by adding /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf file. 

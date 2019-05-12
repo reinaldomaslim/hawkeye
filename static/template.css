@@ -1,0 +1,27 @@
+ body {
+  background-color: black;
+}
+
+h1 {
+  color: lime;
+  text-align: center;
+  text-decoration: underline overline;
+}
+
+p {
+
+  text-align: center;
+  color: lime;
+  font-family: arial;
+  font-size: 18px;
+  font-style: italic;
+  text-decoration: underline overline;
+}
+
+form {
+
+  text-align: center;
+  color: lightgrey;
+  font-family: arial;
+  font-size: 18px;
+}

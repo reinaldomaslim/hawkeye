@@ -89,7 +89,7 @@ def make_html(veh_id, date):
         if os.path.isfile(status_path):
             f = open(status_path, 'r')
             status_text = f.readlines()[0]
-            status_label.setText(status_text)
+            # status_label.setText(status_text)
             return html_name
 
     ftxts = glob.glob(dir_path+'/data/station/text/'+veh_id+'_'+date+'*.txt')
@@ -209,7 +209,7 @@ def make_html(veh_id, date):
         ' km/h || last position: ' + last_position+\
         ' ||'
 
-    status_label.setText(status_text)
+    # status_label.setText(status_text)
 
     f = open(status_path, 'w')
     f.write(status_text)
