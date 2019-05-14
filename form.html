@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Hawkeye</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='template.css') }}">
+    </head>
+    <body>
+
+        <h1> Hawkeye </h1>
+        <p> Fleet-Tracking Systems </p>
+
+        <form method="post">
+            <br>
+            <b>Target</b><br>
+            <input type="checkbox" name="vehicle1" value="dragon"> Dragon<br>
+            <input type="checkbox" name="vehicle2" value="falcon"> Falcon<br>
+            <br>
+            <b>Date</b><br>
+            <input type="date" name="date"><br>
+            <input type="submit" value="Go!">
+        </form> 
+
+    </body>
+</html>
+
+
