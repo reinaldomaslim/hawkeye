@@ -9,9 +9,7 @@ import glob
 import config
 ##### MAIN #####
 
-if __name__ == "__main__":
-    print("station Node 2: convert geojson files to txt") 
-
+def convert_to_text():
     files = glob.glob('./data/station/android/*.geojson')
     for file in files:
         f = open(file)
@@ -49,5 +47,10 @@ if __name__ == "__main__":
             res.write(text)
 
         res.close()
+
+
+if __name__ == "__main__":
+    print("station Node 2: convert geojson files to txt") 
+    convert_to_text()
 
         

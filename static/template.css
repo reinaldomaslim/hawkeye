@@ -13,7 +13,7 @@ p {
   text-align: center;
   color: lime;
   font-family: arial;
-  font-size: 18px;
+  font-size: 22px;
   font-style: italic;
   text-decoration: underline overline;
 }
@@ -21,7 +21,7 @@ p {
 form {
 
   text-align: center;
-  color: lightgrey;
+  color: white;
   font-family: arial;
-  font-size: 18px;
+  font-size: 20px;
 }
