@@ -59,8 +59,9 @@ def convert_to_text():
 
     files = glob.glob('./data/server/backup/*.txt')
     for file in files:
-        copyfile(file, file.replace('backup', 'text').replace('server', 'station'))
-
+        dst = file.replace('backup', 'text').replace('server', 'station')
+        if not os.path.isfile(dst):
+            copyfile(file, dst)
 
 #run through all existing texts and check if html file has been created
 #for today's text, keep updating html if new textfile exist (via created time)
