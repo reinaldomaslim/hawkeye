@@ -6,8 +6,9 @@
 import os
 import glob
 import numpy as np 
-
+import json
 import subprocess
+import config
 from station_node_1 import make_html
 from shutil import copyfile
 
@@ -27,7 +28,7 @@ def convert_to_text():
         year = file.split('/')[-1].split('_')[1][4:]
 
         clock = str(int(file.split('/')[-1].split('_')[-1].split('.')[0])*3600)
-        text_path = './data/server/text/' + profile +'_'+ day +'_'+ month +'_'+ year +'_'+clock+'.txt'
+        text_path = './data/station/text/' + profile +'_'+ day +'_'+ month +'_'+ year +'_'+clock+'.txt'
         
         if os.path.isfile(text_path):
             continue
@@ -58,7 +59,7 @@ def convert_to_text():
 
     files = glob.glob('./data/server/backup/*.txt')
     for file in files:
-        copyfile(file, file.replace('backup', 'text'))
+        copyfile(file, file.replace('backup', 'text').replace('server', 'station'))
 
 
 #run through all existing texts and check if html file has been created
@@ -76,14 +77,14 @@ if __name__ == "__main__":
     convert_to_text()
 
     new_html = False
-    ftxts = glob.glob('./data/server/text/*.txt')
+    ftxts = glob.glob('./data/station/text/*.txt')
     
     for ftxt in ftxts:
         txt = ftxt.split('/')[-1].split('_')
         veh = txt[0]
         date = txt[1]+'_'+txt[2]+'_'+txt[3]
 
-        html_path = './data/server/html/'+veh+'_'+date+'.html'
+        html_path = './data/station/html/'+veh+'_'+date+'.html'
         print(html_path)
 
         if not os.path.isfile(html_path):
@@ -97,8 +98,8 @@ if __name__ == "__main__":
                 make_html(veh, date)
                 new_html = True
     
-        if new_html:
-            #relaunch when new file is created
-            subprocess.call(['./launch_web.sh'])
+    if new_html:
+        #relaunch when new file is created
+        subprocess.call(['./launch_web.sh'])
         
         

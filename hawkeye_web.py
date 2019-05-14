@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request
 # from station_node_1 import make_html
 
-app = Flask(__name__, template_folder="./data/server/html")
+app = Flask(__name__, template_folder="./data/station/html")
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
