@@ -102,4 +102,4 @@ if __name__ == "__main__":
         #relaunch when new file is created
         subprocess.call(['./launch_web.sh'])
         
-        
+    print('--------')        
