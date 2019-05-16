@@ -33,7 +33,7 @@ def convert_to_text():
         if os.path.isfile(text_path):
             continue
 
-        print(text_path)
+       
         res = open(text_path, 'w')
 
         data = json.load(f)
@@ -86,10 +86,10 @@ if __name__ == "__main__":
         date = txt[1]+'_'+txt[2]+'_'+txt[3]
 
         html_path = './data/station/html/'+veh+'_'+date+'.html'
-        print(html_path)
+       
 
         if not os.path.isfile(html_path):
-            print('file doesnt exist')
+            print(html_path + ' doesnt exist')
             make_html(veh, date)
             new_html = True
         else:
@@ -102,5 +102,5 @@ if __name__ == "__main__":
     if new_html:
         #relaunch when new file is created
         subprocess.call(['./launch_web.sh'])
-        
+        print('launch web')
     print('--------')        
