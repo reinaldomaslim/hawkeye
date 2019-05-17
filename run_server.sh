@@ -9,5 +9,5 @@ do
 	#need to copy from server
 	python server_node_2.py
 	#sleep for today
-	sleep 10
+	sleep 60
 done
