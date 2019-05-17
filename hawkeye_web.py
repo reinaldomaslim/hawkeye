@@ -7,10 +7,11 @@ app = Flask(__name__, template_folder="./data/station/html")
 def form():
 
     if request.method == 'POST':
-        default_veh = 'dragon'
+        default_veh = 'blabla'
         default_date = '2019-04-30'
 
         vehicle = request.form.get('vehicle', default_veh)
+        print(vehicle)
         date = request.form.get('date', default_date).split('-')
         date = date[2]+'_'+date[1]+'_'+date[0]
 
