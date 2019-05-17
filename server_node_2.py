@@ -79,7 +79,8 @@ if __name__ == "__main__":
 
     new_html = False
     ftxts = glob.glob('./data/station/text/*.txt')
-    
+    ftxts.sort()
+        
     for ftxt in ftxts:
         txt = ftxt.split('/')[-1].split('_')
         veh = txt[0]
