@@ -98,11 +98,13 @@ if __name__ == "__main__":
             html_time = os.path.getmtime(html_path)
             ftxt_time = os.path.getmtime(ftxt)
             if ftxt_time > html_time:
+                print('updated html '+ html_path)
                 make_html(veh, date)
                 new_html = True
     
     if new_html:
         #relaunch when new file is created
-        subprocess.call(['./launch_web.sh'])
-        print('launch web')
-    print('--------')        
+        print('upload new html')
+        os.system('./launch_web.sh')
+        #subprocess.call(['./launch_web.sh'])
+        print('--------')        
