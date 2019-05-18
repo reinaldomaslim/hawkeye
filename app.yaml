@@ -15,3 +15,6 @@ libraries:
   - name: numpy
     version: "1.6.1"
 
+skip_files:
+  - data/server/
+  - data/station/text/

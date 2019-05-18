@@ -31,8 +31,10 @@ def convert_to_text():
         text_path = './data/station/text/' + profile +'_'+ day +'_'+ month +'_'+ year +'_'+clock+'.txt'
         
         if os.path.isfile(text_path):
-            continue
-
+            json_time = os.path.getmtime(file)
+            txt_time = os.path.getmtime(text_path)
+            if json_time<txt_time:
+                continue
        
         res = open(text_path, 'w')
 
@@ -87,8 +89,7 @@ if __name__ == "__main__":
         date = txt[1]+'_'+txt[2]+'_'+txt[3]
 
         html_path = './data/station/html/'+veh+'_'+date+'.html'
-       
-
+    
         if not os.path.isfile(html_path):
             print(html_path + ' doesnt exist')
             make_html(veh, date)
