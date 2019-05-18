@@ -1,3 +1,4 @@
 #!/bin/bash
 source virtual/bin/activate
-gcloud app deploy --quiet --project neon-bank-181705 --stop-previous-version
+gsutil rm -r gs://staging.neon-bank-181705.appspot.com 
+gcloud app deploy --quiet --project neon-bank-181705 

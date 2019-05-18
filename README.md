@@ -18,7 +18,13 @@ Nodes:
 3. Rpi3 Client
 4. Android Client
 
+
 Setup Instructions:
+
+
+On Server:
+1. install virtualenv and gcloud
+2. use nohup run_server
 
 On Station Machine
 1. clone repo
