@@ -75,12 +75,7 @@ def upload_to_cloud(html_path):
 ##### MAIN #####
 
 if __name__ == "__main__":
-    print("server Node 2: Create HTMLS template") 
-    
-    # subprocess.call(['./launch_web.sh'])
-        
-    # while True:
-    
+    # print("server Node 2: Create HTMLS template") 
     convert_to_text()
 
     ftxts = glob.glob('./data/station/text/*.txt')
