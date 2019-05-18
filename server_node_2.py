@@ -68,6 +68,10 @@ def convert_to_text():
 #run through all existing texts and check if html file has been created
 #for today's text, keep updating html if new textfile exist (via created time)
 
+def upload_to_cloud(html_path):
+    os.sys('gsutil cp '+html_path+' gs://staging.neon-bank-181705.appspot.com/')
+
+
 ##### MAIN #####
 
 if __name__ == "__main__":
@@ -79,10 +83,9 @@ if __name__ == "__main__":
     
     convert_to_text()
 
-    new_html = False
     ftxts = glob.glob('./data/station/text/*.txt')
     ftxts.sort()
-        
+    new_htmls = []
     for ftxt in ftxts:
         txt = ftxt.split('/')[-1].split('_')
         veh = txt[0]
@@ -93,16 +96,14 @@ if __name__ == "__main__":
         if not os.path.isfile(html_path):
             print(html_path + ' doesnt exist')
             make_html(veh, date)
-            new_html = True
+            new_htmls.append(html_path)
         else:
             html_time = os.path.getmtime(html_path)
             ftxt_time = os.path.getmtime(ftxt)
             if ftxt_time > html_time:
+                print('updated html '+ html_path)
                 make_html(veh, date)
-                new_html = True
-    
-    if new_html:
-        #relaunch when new file is created
-        subprocess.call(['./launch_web.sh'])
-        print('launch web')
-    print('--------')        
+                new_htmls.append(html_path)
+
+    for html_path in set(new_htmls):
+        upload_to_cloud(html_path)
