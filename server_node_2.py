@@ -35,9 +35,11 @@ def convert_to_text():
             txt_time = os.path.getmtime(text_path)
             if json_time<txt_time:
                 continue
+            else:
+                os.remove(text_path)
        
         res = open(text_path, 'w')
-
+        print('make text '+text_path)
         data = json.load(f)
         for feature in data['features']:
             accuracy = feature['properties']['accuracy']
@@ -69,17 +71,22 @@ def convert_to_text():
 #for today's text, keep updating html if new textfile exist (via created time)
 
 def upload_to_cloud(html_path):
-    os.sys('gsutil cp '+html_path+' gs://staging.neon-bank-181705.appspot.com/')
-
+    
+    command = ['gsutil cp ' + html_path + ' gs://staging.neon-bank-181705.appspot.com/']
+    subprocess.call(command, shell = True)
 
 ##### MAIN #####
 
 if __name__ == "__main__":
-    # print("server Node 2: Create HTMLS template") 
+    print("server Node 2: Create HTMLS template") 
+    
+    # subprocess.call(['./launch_web.sh'])
+    
     convert_to_text()
 
     ftxts = glob.glob('./data/station/text/*.txt')
     ftxts.sort()
+    
     new_htmls = []
     for ftxt in ftxts:
         txt = ftxt.split('/')[-1].split('_')
@@ -95,8 +102,10 @@ if __name__ == "__main__":
         else:
             html_time = os.path.getmtime(html_path)
             ftxt_time = os.path.getmtime(ftxt)
+            #print(ftxt_time, html_time)      
             if ftxt_time > html_time:
                 print('updated html '+ html_path)
+                os.remove(html_path)
                 make_html(veh, date)
                 new_htmls.append(html_path)
 
