@@ -13,8 +13,7 @@
         <form method="post">
             <div>
                 <br>
-                <b>Target</b><br>
-
+                
                 {% for veh in vehicle_list %}
                     <input type="radio" name="vehicle" value={{ veh }}> {{ veh }}<br>
                 {% endfor %}
@@ -24,8 +23,8 @@
 
 
             <div>
-                <b>Date</b><br>
-                <input type="date" name="date"><br>
+                <input type="date" name="date"><br><br>
+                
                 <input type="submit" value="Go!">
             <div>
 
