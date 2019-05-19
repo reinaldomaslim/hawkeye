@@ -81,7 +81,7 @@ if __name__ == "__main__":
     print("server Node 2: Create HTMLS template") 
     
     # subprocess.call(['./launch_web.sh'])
-         
+    
     convert_to_text()
 
     ftxts = glob.glob('./data/station/text/*.txt')
