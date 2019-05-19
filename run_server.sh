@@ -4,7 +4,7 @@ echo "project of reinaldomaslim"
 
 #sleep wait for wifi to be up
 
-./launch_web.sh
+#./launch_web.sh
 
 while true 
 do

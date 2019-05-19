@@ -1,0 +1,369 @@
+Hawkeye Server
+project of reinaldomaslim
+Services to deploy:
+
+descriptor:      [/home/ubuntu/Documents/hawkeye/app.yaml]
+source:          [/home/ubuntu/Documents/hawkeye]
+target project:  [neon-bank-181705]
+target service:  [default]
+target version:  [20190518t015209]
+target url:      [https://neon-bank-181705.appspot.com]
+
+
+Beginning deployment of service [default]...
+#============================================================#
+#= Uploading 11 files to Google Cloud Storage               =#
+#============================================================#
+File upload done.
+Updating service [default]...
+...................................................................failed.
+ERROR: (gcoud.app.deploy) Error Response: [3] The following errors occurred while copying files to App Engine:
+File https://storage.googleapis.com/staging.neon-bank-181705.appspot.com/e395d5162b4c5cf9c83882902421c02fb7a3985b failed with: Conflicting SHA1 sum for file. Expected "f7e1d79d_e29b748b_7686fd0c_c027a793_86b02a74" but received "e395d516_2b4c5cf9_c8388290_2421c02f_b7a3985b".
+
+Details: [
+  [
+    {
+      "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+      "description": "Conflicting SHA1 sum for file. Expected \"f7e1d79d_e29b748b_7686fd0c_c027a793_86b02a74\" but received \"e395d516_2b4c5cf9_c8388290_2421c02f_b7a3985b\".",
+      "resourceName": "https://storage.googleapis.com/staging.neon-bank-181705.appspot.com/e395d5162b4c5cf9c83882902421c02fb7a3985b",
+      "resourceType": "file"
+    }
+  ]
+]
+
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+Copying file://./data/station/html/dragon_18_05_2019.html [Content-Type=text/html]...
+/ [0 files][    0.0 B/255.0 KiB]                                                / [1 files][255.0 KiB/255.0 KiB]                                                -
+Operation completed over 1 objects/255.0 KiB.                                    
+server Node 2: Create HTMLS template
+make text ./data/station/text/dragon_18_05_2019_46800.txt
+./data/station/html/dragon_18_05_2019.html doesnt exist
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+Copying file://./data/station/html/dragon_18_05_2019.html [Content-Type=text/html]...
+/ [0 files][    0.0 B/437.7 KiB]                                                / [1 files][437.7 KiB/437.7 KiB]                                                -
+Operation completed over 1 objects/437.7 KiB.                                    
+server Node 2: Create HTMLS template
+make text ./data/station/text/dragon_18_05_2019_54000.txt
+updated html ./data/station/html/dragon_18_05_2019.html
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template
+server Node 2: Create HTMLS template

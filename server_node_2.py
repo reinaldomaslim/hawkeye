@@ -109,5 +109,9 @@ if __name__ == "__main__":
                 make_html(veh, date)
                 new_htmls.append(html_path)
 
-    for html_path in set(new_htmls):
-        upload_to_cloud(html_path)
+    #for html_path in set(new_htmls):
+    #    upload_to_cloud(html_path)
+
+
+    if len(new_htmls)>0:
+        subprocess.call(['./launch_web.sh'])
