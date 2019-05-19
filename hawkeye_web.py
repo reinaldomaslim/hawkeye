@@ -1,12 +1,12 @@
 import glob
 import os
 from flask import Flask, render_template, url_for, request
-from shutil import copyfile
+#from shutil import copyfile
 
 
 ###############################################
 #get vehicle names from 
-ftxts = glob.glob('./data/station/text/*.txt')
+ftxts = glob.glob('./data/station/html/*.html')
 vehicle_list = set()
 for ftxt in ftxts:
     name = ftxt.split('/')[-1].split('.')[0].split('_')
@@ -18,7 +18,7 @@ vehicle_list = list(vehicle_list)
 
 template_folder = './data/station/html'
 
-copyfile('./form.html', template_folder+'/form.html')
+#copyfile('./form.html', template_folder+'/form.html')
 
 
 ###############################################
