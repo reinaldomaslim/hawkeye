@@ -317,7 +317,7 @@ if __name__ == "__main__":
     reverse_date_list = []
     for ftxt in ftxts:
         name = ftxt.split('/')[-1].split('.')[0].split('_')
-        vehicle = name [0]
+        vehicle = name[0]
         date = name[1]+'_'+name[2]+'_'+name[3]
         reverse_date = name[3]+'_'+name[2]+'_'+name[1]
 

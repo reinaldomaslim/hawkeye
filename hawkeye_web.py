@@ -1,29 +1,53 @@
+import glob
+import os
 from flask import Flask, render_template, url_for, request
-# from station_node_1 import make_html
+from shutil import copyfile
 
-app = Flask(__name__, template_folder="./data/station/html")
+
+###############################################
+#get vehicle names from 
+ftxts = glob.glob('./data/station/text/*.txt')
+vehicle_list = set()
+for ftxt in ftxts:
+    name = ftxt.split('/')[-1].split('.')[0].split('_')
+    vehicle = name[0]
+    vehicle_list.add(vehicle)
+
+vehicle_list = list(vehicle_list)
+
+
+template_folder = './data/station/html'
+
+copyfile('./form.html', template_folder+'/form.html')
+
+
+###############################################
+app = Flask(__name__, template_folder=template_folder)
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
 
     if request.method == 'POST':
-        default_veh = 'blabla'
+        default_veh = vehicle_list[0]
         default_date = '2019-04-30'
 
         vehicle = request.form.get('vehicle', default_veh)
-        print(vehicle)
+        
         date = request.form.get('date', default_date).split('-')
         date = date[2]+'_'+date[1]+'_'+date[0]
 
         html_path = vehicle +'_'+date+'.html'
-        # html_path = make_html(vehicle, date).split('/')[-1]
-        print(html_path)
         
-        return render_template(html_path)
+        if os.path.isfile(template_folder+'/'+html_path):
+            return render_template(html_path)
+        else:
+            return render_template("form.html", vehicle_list = vehicle_list)
+
 
     else:
-        return render_template("form.html")
+        return render_template("form.html", vehicle_list = vehicle_list)
 
 
+###############################################
 if __name__ == "__main__":
     app.run(debug=True)

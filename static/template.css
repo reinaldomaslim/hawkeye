@@ -15,13 +15,13 @@ p {
   font-family: arial;
   font-size: 22px;
   font-style: italic;
-  text-decoration: underline overline;
+  /*text-decoration: underline overline;*/
 }
 
 form {
 
   text-align: center;
-  color: white;
+  color: limegreen;
   font-family: arial;
   font-size: 20px;
 }

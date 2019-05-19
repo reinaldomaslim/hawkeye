@@ -11,14 +11,24 @@
         <p> Fleet-Tracking Systems </p>
 
         <form method="post">
-            <br>
-            <b>Target</b><br>
-            <input type="checkbox" name="vehicle" value="dragon"> Dragon<br>
-            <input type="checkbox" name="vehicle" value="falcon"> Falcon<br>
-            <br>
-            <b>Date</b><br>
-            <input type="date" name="date"><br>
-            <input type="submit" value="Go!">
+            <div>
+                <br>
+                <b>Target</b><br>
+
+                {% for veh in vehicle_list %}
+                    <input type="radio" name="vehicle" value={{ veh }}> {{ veh }}<br>
+                {% endfor %}
+                
+                <br>
+            <div>
+
+
+            <div>
+                <b>Date</b><br>
+                <input type="date" name="date"><br>
+                <input type="submit" value="Go!">
+            <div>
+
         </form> 
 
     </body>
