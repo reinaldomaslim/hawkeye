@@ -11,6 +11,8 @@ vehicle_list = set()
 for ftxt in ftxts:
     name = ftxt.split('/')[-1].split('.')[0].split('_')
     vehicle = name[0]
+    if vehicle == 'form':
+        continue
     vehicle_list.add(vehicle)
 
 vehicle_list = list(vehicle_list)
