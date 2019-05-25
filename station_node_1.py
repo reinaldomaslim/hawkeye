@@ -180,12 +180,19 @@ def make_html(veh_id, date):
 
         if stop_cnt > 1*60/config.spc: #we wait 5 minutes
             #stopped for too long, put a flag
-            gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'orange', size=5, marker=True)
+            time = 'slow '+str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
+            gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
+            
+            # gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'orange', size=5, marker=True)
             stop_cnt = 0
 
         if dist > 500 or delta_time > 500:   
             #separate ride
-            gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
+            # gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
+            
+            time = str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
+            gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
+
             continue
         else:
             total_time += delta_time
@@ -193,8 +200,12 @@ def make_html(veh_id, date):
         gmap.plot(snapped_path[i:i+2, 0], snapped_path[i:i+2, 1], color, edge_width=10)
 
     #starting and current ending point
-    gmap.scatter([snapped_path[0, 0]], [snapped_path[0, 1]], 'green', size=5, marker=True)
-    gmap.scatter([snapped_path[-1, 0]], [snapped_path[-1, 1]], 'blue', size=5, marker=True)
+
+    time = 'start ' + str(int(snapped_time[0]/3600))+':'+str(int(snapped_time[0]/60%60))
+    gmap.infowindow(time, snapped_path[0, 0], snapped_path[0, 1])
+
+    time = 'end ' + str(int(snapped_time[-1]/3600))+':'+str(int(snapped_time[-1]/60%60))
+    gmap.infowindow(time, snapped_path[-1, 0], snapped_path[-1, 1])
 
     res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
     last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
@@ -208,7 +219,8 @@ def make_html(veh_id, date):
         ' min || average speed: ' + str(round(total_dist*3.6/total_time, 2))+\
         ' km/h || last position: ' + last_position+\
         ' ||'
-
+        
+    # gmap.infowindow("'hello'", snapped_path[-1, 0], snapped_path[-1, 1])
     # status_label.setText(status_text)
 
     f = open(status_path, 'w')
