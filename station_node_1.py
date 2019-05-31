@@ -180,8 +180,8 @@ def make_html(veh_id, date):
 
         if stop_cnt > 1*60/config.spc: #we wait 5 minutes
             #stopped for too long, put a flag
-            # time = 'slow '+str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
-            # gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
+            time = str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
+            gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
             
             gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'orange', size=5, marker=True)
             stop_cnt = 0
@@ -190,8 +190,8 @@ def make_html(veh_id, date):
             #separate ride
             gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
             
-            # time = str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
-            # gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
+            time = str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
+            gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
 
             continue
         else:
@@ -201,11 +201,11 @@ def make_html(veh_id, date):
 
     #starting and current ending point
 
-    # time = 'start ' + str(int(snapped_time[0]/3600))+':'+str(int(snapped_time[0]/60%60))
-    # gmap.infowindow(time, snapped_path[0, 0], snapped_path[0, 1])
+    time = 'start ' + str(int(snapped_time[0]/3600))+':'+str(int(snapped_time[0]/60%60))
+    gmap.infowindow(time, snapped_path[0, 0], snapped_path[0, 1])
 
-    # time = 'end ' + str(int(snapped_time[-1]/3600))+':'+str(int(snapped_time[-1]/60%60))
-    # gmap.infowindow(time, snapped_path[-1, 0], snapped_path[-1, 1])
+    time = 'end ' + str(int(snapped_time[-1]/3600))+':'+str(int(snapped_time[-1]/60%60))
+    gmap.infowindow(time, snapped_path[-1, 0], snapped_path[-1, 1])
 
     res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
     last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
