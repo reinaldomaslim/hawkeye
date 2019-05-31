@@ -401,8 +401,9 @@ class GoogleMapPlotter(object):
             f.write('  var %s = new google.maps.InfoWindow({\n' % infowindowname)
             f.write("    content: '%s'\n" % content)
             f.write('  });\n')
+            f.write('%s.open(map, %s);\n' % (infowindowname, markername))
             f.write("  %s.addListener('click', function() {\n" % markername)
-            f.write('    %s.open(map, %s);\n' % (infowindowname, markername))
+            f.write('    %s.close(map, %s);\n' % (infowindowname, markername))
             f.write('  });\n\n')
 
 if __name__ == "__main__":
