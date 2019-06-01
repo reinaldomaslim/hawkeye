@@ -180,9 +180,6 @@ def make_html(veh_id, date):
 
         if stop_cnt > 1*60/config.spc: #we wait 5 minutes
             #stopped for too long, put a flag
-            time = str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
-            gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
-            
             gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'orange', size=5, marker=True)
             stop_cnt = 0
 
@@ -190,6 +187,9 @@ def make_html(veh_id, date):
             #separate ride
             gmap.scatter([snapped_path[i, 0]], [snapped_path[i, 1]], 'red', size=5, marker=True)
             
+            time = str(int(snapped_time[i-1]/3600))+':'+str(int(snapped_time[i-1]/60%60))
+            gmap.infowindow(time, snapped_path[i-1, 0], snapped_path[i-1, 1])
+
             time = str(int(snapped_time[i]/3600))+':'+str(int(snapped_time[i]/60%60))
             gmap.infowindow(time, snapped_path[i, 0], snapped_path[i, 1])
 
