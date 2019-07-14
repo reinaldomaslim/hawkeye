@@ -196,6 +196,8 @@ def make_html(veh_id, date):
     gmap.scatter([snapped_path[0, 0]], [snapped_path[0, 1]], 'green', size=5, marker=True)
     gmap.scatter([snapped_path[-1, 0]], [snapped_path[-1, 1]], 'blue', size=5, marker=True)
 
+    # gmap.infowindow("hello", snapped_path[-1, 0], snapped_path[-1, 1])
+
     res = gmaps.reverse_geocode((snapped_path[-1, 0], snapped_path[-1, 1]))
     last_position = res[0]['address_components'][0]['short_name']+' '+res[0]['address_components'][1]['short_name']
     
