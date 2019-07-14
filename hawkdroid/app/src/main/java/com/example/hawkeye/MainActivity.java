@@ -22,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-        mWebView.loadUrl("https://neon-bank-181705.appspot.com/");
 
+        if (savedInstanceState == null) {
+            mWebView.loadUrl("https://neon-bank-181705.appspot.com/");
+        }
     }
 
     @Override
@@ -41,6 +43,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        mWebView.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        mWebView.restoreState(savedInstanceState);
+    }
+
 
 
 }
